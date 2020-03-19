@@ -1,14 +1,14 @@
 Buttplug for c-lightning
 ========================
 
-![](doc/splash.jpeg)
+This plugin for c-lightning makes your feel goo-o-ood whenever your node receives or routes a lightning payment. Configure it to use your favorite sex toy for notifications.
 
-This plugin for c-lightning makes your feel good whenever your node receives or routes a lightning payment. Configure it to use your sex toy for notifications.
+![](doc/splash.jpeg)
 
 Installation
 ============
 
-Clone this into `~/.lightning/plugins/` folder?
+Clone this into `~/.lightning/plugins/` folder, make sure `buttplugin.py` is executable (set with `chmod +x buttplugin.py`)
 
 Excitement configuration
 ========================
