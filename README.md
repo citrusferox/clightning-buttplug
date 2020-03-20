@@ -10,6 +10,8 @@ Installation
 
 Clone this into `~/.lightning/plugins/` folder, make sure `buttplugin.py` is executable (set with `chmod +x buttplugin.py`)
 
+Perfect companion to the [donation plugin](https://github.com/lightningd/plugins/tree/master/donations) - feel support of your community!
+
 Excitement configuration
 ========================
 
