@@ -1,5 +1,5 @@
-Buttplug for c-lightning
-========================
+Lightning plug
+==============
 
 This plugin for c-lightning makes your feel goo-o-ood whenever your node receives or routes a lightning payment. Configure it to use your favorite sex toy for notifications.
 
