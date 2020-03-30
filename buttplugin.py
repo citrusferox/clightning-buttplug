@@ -5,6 +5,8 @@ from lightning import Plugin
 # here we use SayBackend - text-to-speach program
 # like `say` or `espeak`
 from backends.say import SayBackend
+# PostBackend can make post requests to the server
+# useful to notify donation server about new payment
 from backends.post import PostBackend
 
 plugin = Plugin()
