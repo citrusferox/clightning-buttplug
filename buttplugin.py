@@ -4,13 +4,17 @@ from lightning import Plugin
 # import notification backend
 # here we use SayBackend - text-to-speach program
 # like `say` or `espeak`
-from backends.say import SayBackend as Backend
+from backends.say import SayBackend
+from backends.post import PostBackend
 
 plugin = Plugin()
 
 # Create a backend with necessary init parameters
 # in this case we use `espeak` process to notify us
-backend = Backend("espeak")
+backends = [
+    PostBackend("http://localhost:8080/invoice/", "http://localhost:8080/route/"),
+    SayBackend("espeak")
+]
 
 @plugin.method("buttplug")
 def buttplug(plugin, method="payment", amount=1000):
@@ -19,8 +23,6 @@ def buttplug(plugin, method="payment", amount=1000):
     buttplug payment 1000 - feel like invoice for 1000 sat was paid;
     buttplug route 1 - feel like a payment was routed with 1 sat fee 
     """
-    # greeting = plugin.get_option('greeting')
-    # s = '{} {}'.format(greeting, name)
     amount = float(amount)
     # craft events and call corresponding notifications
     if method=="payment":
@@ -42,7 +44,8 @@ def buttplug(plugin, method="payment", amount=1000):
 
 @plugin.init()
 def init(options, configuration, plugin, **kwargs):
-    backend.notify("Buttplug initialized")
+    for backend in backends:
+        backend.notify("Buttplug initialized")
     plugin.log("Plugin buttplug.py initialized")
 
 @plugin.subscribe("forward_event")
@@ -53,7 +56,8 @@ def on_forward(plugin, forward_event, **kwargs):
         amount = int(forward_event.get("fee_msat").replace("msat",""))
         # TODO: get pattern and other vibro parameters
         # vibrate for routing
-        backend.on_forward(amount)
+        for backend in backends:
+            backend.on_forward(amount)
 
         plugin.log("Routed a payment with %d millisatoshi fee" % amount)
     else:
@@ -65,7 +69,9 @@ def on_payment(plugin, invoice_payment, **kwargs):
     amount = int(invoice_payment.get("msat").replace("msat",""))
     # TODO: get pattern and other vibro parameters
     # vibrate for payment
-    backend.on_payment(amount)
+    for backend in backends:
+        backend.on_payment(amount)
+        plugin.log("backend: %r" % backend)
 
     plugin.log("Received invoice_payment event for label {}, preimage {},"
                " and amount of {}".format(invoice_payment.get("label"),
