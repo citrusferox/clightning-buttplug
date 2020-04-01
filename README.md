@@ -8,12 +8,14 @@ This plugin for c-lightning makes your feel goo-o-ood whenever your node receive
 Installation
 ============
 
-Clone this into `~/.lightning/plugins/` folder, make sure `buttplugin.py` is executable (set with `chmod +x buttplugin.py`)
+- Clone this into `~/.lightning/plugins/` folder, make sure `buttplugin.py` is executable (set with `chmod +x buttplugin.py`)
+- Run [Intiface Desktop](https://intiface.com/desktop/) and start the websocket server
+- Run c-lightning - you should feel that plugin started with a small vibration in your ass.
 
 Perfect companion to the [donation plugin](https://github.com/lightningd/plugins/tree/master/donations) - feel support of your community!
 
-Excitement configuration
-========================
+Excitement configuration (WIP)
+==============================
 
 By default every satoshi makes you happy, both for routing and receving payments.
 
@@ -30,7 +32,7 @@ Pleasure testing
 Check how it feels when you route a payment with 1 satoshi fee:
 
 ```sh
-lightning-cli buttplug route 1
+lightning-cli buttplug route 1000
 ```
 
 Same for invoice payment of 10000 satoshi:
@@ -38,3 +40,12 @@ Same for invoice payment of 10000 satoshi:
 ```sh
 lightning-cli buttplug payment 10000
 ```
+
+Support
+=======
+
+I have huge plans - testing different toys, interactive configuration of the vibration pulse on the donation service, video streaming and so on. Let's enjoy Lightning together!
+
+Show me your love on [tallyco.in](https://tallyco.in/citrusferox/)
+
+Say hi on twitter: [@citrusferox](https://twitter.com/CitrusFerox)

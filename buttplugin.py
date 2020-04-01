@@ -1,21 +1,23 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3.7
 from lightning import Plugin
 
 # import notification backend
-# here we use SayBackend - text-to-speach program
+from backends.sextoy import SexToyBackend
+# another example is SayBackend - text-to-speach program
 # like `say` or `espeak`
 from backends.say import SayBackend
-# PostBackend can make post requests to the server
+# HookBackend can make http(s) requests to the server
 # useful to notify donation server about new payment
-from backends.post import PostBackend
+from backends.webhook import WebhookBackend
 
 plugin = Plugin()
 
-# Create a backend with necessary init parameters
-# in this case we use `espeak` process to notify us
+# Create a list of backends with necessary init parameters
+# in this case we use both sextoy and webhook
 backends = [
-    PostBackend("http://localhost:8080/invoice/", "http://localhost:8080/route/"),
-    SayBackend("espeak")
+    SexToyBackend(),
+    WebhookBackend("http://localhost:8080/invoice/", "http://localhost:8080/route/"),
+    # SayBackend("espeak"),
 ]
 
 @plugin.method("buttplug")
@@ -47,7 +49,10 @@ def buttplug(plugin, method="payment", amount=1000):
 @plugin.init()
 def init(options, configuration, plugin, **kwargs):
     for backend in backends:
-        backend.notify("Buttplug initialized")
+        try:
+            backend.notify("Buttplug initialized")
+        except:
+            pass
     plugin.log("Plugin buttplug.py initialized")
 
 @plugin.subscribe("forward_event")
@@ -59,7 +64,10 @@ def on_forward(plugin, forward_event, **kwargs):
         # TODO: get pattern and other vibro parameters
         # vibrate for routing
         for backend in backends:
-            backend.on_forward(amount)
+            try:
+                backend.on_route(amount)
+            except:
+                pass
 
         plugin.log("Routed a payment with %d millisatoshi fee" % amount)
     else:
@@ -72,8 +80,11 @@ def on_payment(plugin, invoice_payment, **kwargs):
     # TODO: get pattern and other vibro parameters
     # vibrate for payment
     for backend in backends:
-        backend.on_payment(amount)
-        plugin.log("backend: %r" % backend)
+        try:
+            backend.on_payment(amount)
+            plugin.log("backend: %r" % backend)
+        except:
+            pass
 
     plugin.log("Received invoice_payment event for label {}, preimage {},"
                " and amount of {}".format(invoice_payment.get("label"),
@@ -83,5 +94,5 @@ def on_payment(plugin, invoice_payment, **kwargs):
 if __name__ == '__main__':
     # adding buttplug parameters
     # TODO: good names...
-    plugin.add_option('buttpattern', '419', 'Vibro pattern to use.')
+    # plugin.add_option('buttpattern', '419', 'Vibro pattern to use.')
     plugin.run()

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import requests
 
-class PostBackend:
+class WebhookBackend:
     def __init__(self, 
                  invoice_url="http://localhost:8080/invoice/",
                  route_url=None
@@ -21,5 +21,5 @@ class PostBackend:
             requests.get(self.invoice_url)
 
 if __name__ == '__main__':
-    backend = PostBackend()
+    backend = WebhookBackend()
     backend.on_payment(100e3)
